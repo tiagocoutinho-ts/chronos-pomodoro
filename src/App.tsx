@@ -29,7 +29,7 @@ function App() {
       <form className='form' action="">
         <div className="formRow">
             <DefaultInput labelText='task' id="meuInput" type="number"/>  
-        </div>  
+        </div>
 
       <div className="formRow">
             <p>Lorem ipsum dolor sit amet consectetur.</p>
