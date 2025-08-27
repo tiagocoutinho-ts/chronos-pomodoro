@@ -5,4 +5,5 @@ export type TaskModel = {
     startDate: number;
     completeDate: number | null; 
     interruptDate: number | null;
-} 
+    type: "workTime" | "shortBreakTime" | "longBreakTime";
+}
