@@ -3,7 +3,7 @@ import { TaskStateModel } from "../../components/models/TaskStateModels"
 export const initialTaskState: TaskStateModel = {
     tasks: [],
     secondsRemaining: 0,
-    formattedSecondsRemaining: "29:00",
+    formattedSecondsRemaining: "00:00",
     activeTask: null,
     currentCycle: 0,
     config: {
