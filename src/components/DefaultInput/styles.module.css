@@ -2,6 +2,7 @@
     background-color: transparent;
     text-align: center;
     font-size: 1.8rem;
+    font-style: italic;
     padding: 0.8rem;
     outline: none;
     transition: all 0.1s ease-in-out;
@@ -9,7 +10,6 @@
     color: var(--text-default);
     border: 0.2rem solid transparent;
     border-bottom: 0.2rem solid var(--primary);
-
 }
 
 .input:focus {

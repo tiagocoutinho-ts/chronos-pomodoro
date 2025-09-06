@@ -9,7 +9,7 @@ export default function DefaultInput({id, labelText, type, ...rest} :DefaultInpu
     return (
         <>
         {<label htmlFor={id}>{labelText}</label>}
-        <input className={style.input} id={id} type={type} {...rest}/>  
+        <input className={style.input} placeholder="Digite algo" id={id} type={type} {...rest}/>  
         </>
     )
 }
