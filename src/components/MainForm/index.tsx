@@ -9,7 +9,7 @@ import { getNextCycle } from "../../utils/getNextCycle"
 import { getNextCycleType } from "../../utils/getNextCycleType"
 import { TaskActionTypes } from "../../contexts/TaskContext/taskActions"
 import { Tips } from "../Tips"
-import { TimeWorkerManager } from "../../workers/TimeWorkersManager"
+import { showMessage } from "../../adapters/showMessage"
 
 export default function MainForm() {
     const taskNameInput = useRef<HTMLInputElement>(null)
@@ -20,13 +20,14 @@ export default function MainForm() {
 
     function handleCreateNewTask(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
+        showMessage.dismiss()
 
         if (taskNameInput.current === null) return
         
         const taskName = taskNameInput.current.value.trim()
         
         if (!taskName) {
-            alert("Digite o nome da tarefa")
+            showMessage.warning("Digite o nome da tarefa")
             return
         }
 
@@ -41,10 +42,14 @@ export default function MainForm() {
         }
 
         dispatch({type: TaskActionTypes.START_TASK, payload: newTask})
+
+        showMessage.success("Tarefa iniciada")
     }
 
     function handleInterruptTask(e: React.MouseEvent<HTMLButtonElement, MouseEvent>){
         e.preventDefault()
+        showMessage.dismiss()
+        showMessage.info("Tarefa interrompida")
         dispatch({type: TaskActionTypes.INTERRUPT_TASK})
        
     }
