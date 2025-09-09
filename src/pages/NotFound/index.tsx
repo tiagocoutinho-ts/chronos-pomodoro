@@ -1,9 +1,8 @@
 import Container from "../../components/Container";
 import GenericHTML from "../../components/GenericHTML";
-import Heading from "../../components/Heading";
 import MainTemplate from "../../templates/MainTemplate";
 
-export default function Home() {
+export default function NotFound() {
 
     return (
         <MainTemplate>
