@@ -21,7 +21,7 @@ export default function Cycles(){
                 {cycleStep.map((_, index) => {
                     const nextCycle = getNextCycle(index)
                     const nextCycleType = getNextCycleType(nextCycle)
-                    console.log(nextCycleType)
+
                     return (
                         <span 
                         key={nextCycle}
