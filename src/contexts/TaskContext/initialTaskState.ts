@@ -1,4 +1,4 @@
-import { TaskStateModel } from "../../components/models/TaskStateModels"
+import type { TaskStateModel } from "../../components/models/TaskStateModels"
 
 export const initialTaskState: TaskStateModel = {
     tasks: [],

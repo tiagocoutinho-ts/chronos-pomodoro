@@ -26,6 +26,6 @@ export type TaskActionWithoutPayLoad =
     type: TaskActionTypes.COMPLETE_TASK
 }
 
-export type taskActionsModel = 
+export type TaskActionModel = 
     | TaskActionWithPayLoad
     | TaskActionWithoutPayLoad

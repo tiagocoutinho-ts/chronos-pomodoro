@@ -7,9 +7,40 @@ import MainTemplate from "../../templates/MainTemplate";
 import styles from "./styles.module.css"
 import { useTaskContext } from "../../contexts/TaskContext/useTaskContext";
 import { formatDate } from "../../utils/formatDate";
+import { getTaskStatus } from "../../utils/getTaskStatus";
+import { sortTasks, type SortTasksOptions } from "../../utils/sortTasks";
+import { useState } from "react";
+import { TaskActionTypes } from "../../contexts/TaskContext/taskActions";
 
 export default function History() {
-    const {state} = useTaskContext()
+    const {state, dispatch} = useTaskContext()
+    const [sortTaskOptions, setSortTaskOptions] = useState<SortTasksOptions>(() => {
+        return {
+            tasks: sortTasks({tasks: state.tasks}),
+            field: "startDate",
+            direction: "desc"
+        }
+    })
+
+    function handleSortTask({field}: Pick<SortTasksOptions, "field">){
+        const newDirection = sortTaskOptions.direction === "desc" ? "asc" : "desc"
+
+        setSortTaskOptions({
+            tasks: sortTasks({
+                direction: newDirection,
+                tasks: sortTaskOptions.tasks,
+                field,
+            }),
+            direction: newDirection,
+            field,
+        })
+    }
+
+    function handleResetHistory() {
+        if(!confirm("Tem certeza deseja realizar essa ação?")) return
+
+        dispatch({type: TaskActionTypes.RESET_STATE})
+    }
 
     return (
         <MainTemplate>
@@ -21,7 +52,8 @@ export default function History() {
                         icon={<TrashIcon/>} 
                         color="red"
                         aria-label="Apagar todo o histórico"
-                        title="Apagar histórico"/>
+                        title="Apagar histórico"
+                        onClick={handleResetHistory}/>
                     </span>
                 </Heading>
             </Container>
@@ -31,23 +63,34 @@ export default function History() {
                     <table>
                         <thead>
                             <tr>
-                                <th>Tarefa</th>
-                                <th>Duração</th>
-                                <th>Data</th>
+                                <th onClick={() => handleSortTask({field: "name"})}
+                                    className={styles.thSort}
+                                    >Tarefa ↕</th>
+                                <th onClick={() => handleSortTask({field: "duration"})}
+                                    className={styles.thSort}
+                                    >Duração ↕</th>
+                                <th onClick={() => handleSortTask({field: "startDate"})}
+                                    className={styles.thSort}
+                                    >Data ↕</th>
                                 <th>Status</th>
                                 <th>Tipo</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            {state.tasks.map((task) => {
+                            {sortTaskOptions.tasks.map((task) => {
+                                const taskTypeDictionary = {
+                                    workTime: "Foco",
+                                    shortBreakTime: "Descanso curto",
+                                    longBreakTime: "Descanso longo"
+                                }
                                 return (
                                     <tr key={task.id}>
                                     <td>{task.name}</td>
-                                    <td>{task.duration}</td>
+                                    <td>{task.duration}min</td>
                                     <td>{formatDate(task.startDate)}</td>
-                                    <td>{task.interruptDate}</td>
-                                    <td>{task.type}</td>
+                                    <td>{getTaskStatus(task, state.activeTask)}</td>
+                                    <td>{taskTypeDictionary[task.type]}</td>
                                 </tr>
                                 )
                             })}
