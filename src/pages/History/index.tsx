@@ -9,11 +9,15 @@ import { useTaskContext } from "../../contexts/TaskContext/useTaskContext";
 import { formatDate } from "../../utils/formatDate";
 import { getTaskStatus } from "../../utils/getTaskStatus";
 import { sortTasks, type SortTasksOptions } from "../../utils/sortTasks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { showMessage } from "../../adapters/showMessage";
 import { TaskActionTypes } from "../../contexts/TaskContext/taskActions";
 
 export default function History() {
     const {state, dispatch} = useTaskContext()
+    const [confirmClearHistory, setconfirmClearHistory] = useState(false)
+    const hasTasks = state.tasks.length > 0
+
     const [sortTaskOptions, setSortTaskOptions] = useState<SortTasksOptions>(() => {
         return {
             tasks: sortTasks({tasks: state.tasks}),
@@ -21,7 +25,7 @@ export default function History() {
             direction: "desc"
         }
     })
-
+    
     function handleSortTask({field}: Pick<SortTasksOptions, "field">){
         const newDirection = sortTaskOptions.direction === "desc" ? "asc" : "desc"
 
@@ -36,17 +40,43 @@ export default function History() {
         })
     }
 
-    function handleResetHistory() {
-        if(!confirm("Tem certeza deseja realizar essa ação?")) return
+    useEffect(() => {
+        setSortTaskOptions(prevState => ({
+            ...prevState,
+            tasks: sortTasks({
+                tasks: state.tasks,
+                direction: prevState.direction,
+                field: prevState.field
+            })
+        }))
+    }, [state.tasks])
 
-        dispatch({type: TaskActionTypes.RESET_STATE})
+    useEffect(() => {
+        if(!confirmClearHistory) return
+        setconfirmClearHistory(false)
+
+        dispatch({ type: TaskActionTypes.RESET_STATE})
+    }, [confirmClearHistory, dispatch])
+
+    useEffect(() => {
+        return () => {
+            showMessage.dismiss()
+        }
+    }, [])
+
+    function handleResetHistory() {
+        showMessage.dismiss()
+        showMessage.confirm("Tem certeza que deseja apagar o histórico", (confirmation) => {
+            setconfirmClearHistory(confirmation)
+        })
     }
 
     return (
         <MainTemplate>
             <Container>
                 <Heading>
-                    <span>History</span>
+                    <span>Histórico</span>
+                    {hasTasks && (
                     <span className={styles.buttonContainer}>
                         <DefaultButton 
                         icon={<TrashIcon/>} 
@@ -55,10 +85,12 @@ export default function History() {
                         title="Apagar histórico"
                         onClick={handleResetHistory}/>
                     </span>
+                    )}
                 </Heading>
             </Container>
 
             <Container>
+                {hasTasks && (
                 <div className={styles.responsiveTable}>
                     <table>
                         <thead>
@@ -97,6 +129,12 @@ export default function History() {
                         </tbody>
                     </table>
                 </div>
+                )}
+
+                {!hasTasks && (
+                    <p style={{textAlign: "center", fontWeight: "bold"}}
+                    >Crie sua primeira tarefa!</p>
+                )}
             </Container>
         </MainTemplate>
     )
