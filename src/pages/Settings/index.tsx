@@ -4,18 +4,23 @@ import DefaultInput from "../../components/DefaultInput";
 import Heading from "../../components/Heading";
 import MainTemplate from "../../templates/MainTemplate";
 import DefaultButton from "../../components/DefaultButton";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useTaskContext } from "../../contexts/TaskContext/useTaskContext";
 import { showMessage } from "../../adapters/showMessage";
 import { TaskActionTypes } from "../../contexts/TaskContext/taskActions";
 
 export default function Settings() {
+    
     const { state, dispatch } = useTaskContext()
-
+    
     const workTimeInput = useRef<HTMLInputElement>(null)
     const shortBreakTimeInput = useRef<HTMLInputElement>(null)
     const longBreakTimeInput = useRef<HTMLInputElement>(null)
-
+    
+    useEffect(() => {
+        document.title = "Configurações - Chornos Pomodoro"
+    }, [])
+    
     function handleSaveSettings(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
         showMessage.dismiss()

@@ -2,8 +2,13 @@ import Container from "../../components/Container";
 import GenericHTML from "../../components/GenericHTML";
 import MainTemplate from "../../templates/MainTemplate";
 import { RouterLink } from "../../components/RouterLink";
+import { useEffect } from "react";
 
 export default function Home() {
+    
+    useEffect(() => {
+        document.title = "Entenda a Técnica Pomodoro - Chornos Pomodoro"
+    }, [])
 
     return (
         <MainTemplate>

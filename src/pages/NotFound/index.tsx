@@ -2,14 +2,19 @@ import Container from "../../components/Container";
 import GenericHTML from "../../components/GenericHTML";
 import MainTemplate from "../../templates/MainTemplate";
 import { RouterLink } from "../../components/RouterLink";
+import { useEffect } from "react";
 
 export default function NotFound() {
 
-    return (
-        <MainTemplate>
-            <Container>
+  useEffect(() => {
+    document.title = "Página não encontrada - Chornos Pomodoro"
+  }, [])
+
+  return (
+    <MainTemplate>
+      <Container>
         <GenericHTML>
-            <h1>Página não encontrada!</h1>
+          <h1>Página não encontrada!</h1>
           <p>
             Opa! Parece que a página que você está tentando acessar não existe.
             Talvez ela tenha tirado férias, resolvido explorar o universo ou se
@@ -33,6 +38,6 @@ export default function NotFound() {
           </p>
         </GenericHTML>
       </Container>
-        </MainTemplate >
-    )
+    </MainTemplate >
+  )
 }
