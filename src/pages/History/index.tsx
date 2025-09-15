@@ -70,7 +70,7 @@ export default function History() {
 
     function handleResetHistory() {
         showMessage.dismiss()
-        showMessage.confirm("Tem certeza que deseja apagar o histórico", (confirmation) => {
+        showMessage.confirm("Tem certeza que deseja apagar o histórico?", (confirmation) => {
             setconfirmClearHistory(confirmation)
         })
     }
